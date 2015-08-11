@@ -60,6 +60,16 @@ exports.getAllUserForms = function(req, res) {
   })
 }
 
+exports.getFormById = function(req, res) {
+  Form.find({_id : req.body.id}).limit(1).exec(function(err, forms) {
+    if (err) {
+      res.json({success : false, message : err});
+    } else {
+      res.json({success: true, forms : forms});
+    }
+  });
+}
+
 
 
 exports.getUsers = function(req, res) {

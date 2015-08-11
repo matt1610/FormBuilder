@@ -45,7 +45,7 @@ FormBuilder.factory('API', function($http, APIPATH, Local, Base64){
 })
 
 .factory('APIPATH', function(){
-	return '';
+	return 'http://localhost:5000';
 })
 
 .factory('Local', function(){

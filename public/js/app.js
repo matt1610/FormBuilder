@@ -2,12 +2,13 @@
 
 var FormBuilder = angular.module('DataCapture', ['ui.bootstrap','colorpicker.module'])
 
-.controller('MainCtrl', function($scope, $modal, $log, API, Local){
+.controller('MainCtrl', function($scope, $modal, $log, API, Local, APIPATH){
 
 	$scope.Form = {fields : []};
 	$scope.ShowBuilder = false;
 	$scope.LoggedIn = Local.CheckLogin();
 	$scope.Loading = false;
+	$scope.APIPATH = APIPATH;
 
 	$scope.Remove = function(ind) {
 		$scope.Form.fields.splice(ind, 1);

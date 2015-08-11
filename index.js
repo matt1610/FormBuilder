@@ -33,6 +33,9 @@ app.use(express.static(__dirname + '/public'));
 app.use("/css", express.static(__dirname + '/css'));
 app.use("/js", express.static(__dirname + '/js'));
 app.use("/img", express.static(__dirname + '/img'));
+app.get("/viewForm", function(req, res) {
+	res.sendFile(__dirname + '/public/viewForm.html');
+});
 
 app.use(passport.initialize());
 
@@ -40,6 +43,7 @@ app.post('/postUsers', userController.postUsers);
 app.post('/newForm', authController.isAuthenticated, formController.newForm);
 app.post('/saveForm', authController.isAuthenticated, formController.saveForm);
 app.post('/getAllUserForms', authController.isAuthenticated, formController.getAllUserForms);
+app.post('/getFormById', formController.getFormById);
 
 app.get('/test', function(req, res) {
 	res.send({isOn : true});
