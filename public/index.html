@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="DataCapture">
+<head>
+	<meta charset="UTF-8">
+	<title>Data Capture</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
+	<script type="text/javascript" src="js/ui-bootstrap-tpls-0.9.0.js"></script>
+	<script type="text/javascript" src="js/bootstrap-colorpicker-module.min.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+	<script type="text/javascript" src="js/services.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/colorpicker.min.css">
+	<!-- <link rel="stylesheet" type="text/css" href="css/flat-ui.css"> -->
+</head>
+<body ng-controller="MainCtrl">
+
+	<div class="veil" ng-show="Loading">
+      <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" stroke="#fff">
+        <g fill="none" fill-rule="evenodd" stroke-width="2">
+            <circle cx="22" cy="22" r="1">
+                <animate attributeName="r"
+                    begin="0s" dur="1.8s"
+                    values="1; 20"
+                    calcMode="spline"
+                    keyTimes="0; 1"
+                    keySplines="0.165, 0.84, 0.44, 1"
+                    repeatCount="indefinite" />
+                <animate attributeName="stroke-opacity"
+                    begin="0s" dur="1.8s"
+                    values="1; 0"
+                    calcMode="spline"
+                    keyTimes="0; 1"
+                    keySplines="0.3, 0.61, 0.355, 1"
+                    repeatCount="indefinite" />
+            </circle>
+            <circle cx="22" cy="22" r="1">
+                <animate attributeName="r"
+                    begin="-0.9s" dur="1.8s"
+                    values="1; 20"
+                    calcMode="spline"
+                    keyTimes="0; 1"
+                    keySplines="0.165, 0.84, 0.44, 1"
+                    repeatCount="indefinite" />
+                <animate attributeName="stroke-opacity"
+                    begin="-0.9s" dur="1.8s"
+                    values="1; 0"
+                    calcMode="spline"
+                    keyTimes="0; 1"
+                    keySplines="0.3, 0.61, 0.355, 1"
+                    repeatCount="indefinite" />
+            </circle>
+        </g>
+    </svg>
+  </div>
+
+	<nav class="navbar navbar-default navbar-static-top">
+		<div class="container">
+			<ul class="nav navbar-nav">
+				<li><a href="">New Form</a></li>
+				<li><a href="">My Forms</a></li>
+				<li><a href="">My Account</a></li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container" ng-hide="LoggedIn">
+		<div class="jumbotron">
+		  <h1>Applifi Form Builder</h1>
+		  <p>A simple form builder service brought to you by Applifi. Create your form and send them to your customers.</p>
+		  <div class="alert alert-danger" ng-show="Error">{{Error.message}}</div>
+		  <p>
+		  	<a class="btn btn-success btn-lg" ng-click="SignUpModal()">Sign Up</a>
+			<a class="btn btn-success btn-lg" ng-click="LoginModal()">Log In</a>
+		  </p>
+		</div>
+	</div>
+
+	<div class="container" ng-show="LoggedIn">
+		<div class="page-header">
+		  <h1 ng-show="{{Message.length > 0}}">{{Message}}</h1>
+		  <h1>Welcome to the Form Builder.</h1>
+		  <h3>You are currently editing : <button class="btn btn-success disabled">{{Form.name}}</button></h3>
+		  <hr>
+		  <!-- <p>This is where you will build your form and select where the results are sent to.</p> -->
+		  <button type="submit" class="btn btn-success" ng-click="NewForm()">New Form</button>
+		</div>
+	</div>
+
+	<div class="container" ng-show="LoggedIn">
+		<tabset>
+			<tab heading="My Forms">
+				<div class="table-responsive">
+		          <table class="table table-striped">
+		            <thead>
+		              <tr>
+		                <th class="hidden-xs">#</th>
+		                <th>Name</th>
+		                <th>Email (That gets the results)</th>
+		                <th>Responses</th>
+		                <th>Options</th>
+		              </tr>
+		            </thead>
+
+		            <tbody>
+		              <tr ng-repeat="form in AllForms track by $index" ng-class="{selected : form.selected}">
+		                <th scope="row" class="hidden-xs">{{$index + 1}}</th>
+		                <td>{{form.name}}</td>
+		                <td>{{form.emailTo}}</td>
+		                <td>{{form.responses}}</td>
+		                <td>
+		                  <button type="button" class="btn btn-success" ng-click="EditInBuilder(form)">Edit</button>
+		                  <button type="button" class="btn btn-danger" ng-click="Delete(form)">Delete Form</button>
+		                </td>
+		              </tr>
+		            </tbody>
+
+		          </table>
+		      </div>
+			</tab>
+		    <tab heading="Form Builder" ng-show="ShowBuilder">
+		    	<!-- Form Builder -->
+				<div class="col-sm-3">
+					<div class="form-group">
+						<hr>
+						<h4>Add form elements</h4>
+						<hr>
+						<button type="submit" class="btn btn-info btn-block btn-sm" ng-click="AddElementOptions('input')">Add text input</button>
+						<button type="submit" class="btn btn-info btn-block btn-sm" ng-click="AddElementOptions('textarea')">Add text area</button>
+						<button type="submit" class="btn btn-info btn-block btn-sm" ng-click="AddElementOptions('checkbox')">Add checkbox</button>
+						<button type="submit" class="btn btn-info btn-block btn-sm" ng-click="AddElementOptions('radio')">Add radio button group</button>
+						<button type="submit" class="btn btn-info btn-block btn-sm" ng-click="AddElementOptions('select')">Add select box</button>
+						<hr>
+						<button type="submit" class="btn btn-success btn-block" ng-click="SaveCurrentForm()">Save Form</button>
+					</div>
+				</div>
+				<div class="col-sm-9">
+					<hr>
+					<h4>{{Form.name}}</h4>
+					<hr>
+					<form novalidate name="FormDemo">
+						<div class="form-group" ng-repeat="item in Form.fields track by $index">
+							<label for="inputEmail3" class="col-sm-12 control-label" ng-if="item.elem != 'checkbox'">{{item.label}}</label>
+							<input ng-if="item.elem == 'input'" name="{{item.name}}" type="{{item.type}}" ng-model="DemoForm[item.name]" class="form-control" placeholder="{{item.placeholder}}" ng-required="{{item.required}}">
+
+							<textarea ng-if="item.elem == 'textarea'" class="form-control" name="{{item.name}}" rows="3" placeholder="{{item.placeholder}}" ng-required="{{item.required}}"></textarea>
+
+							<div class="checkbox" ng-if="item.elem == 'checkbox'" name="{{item.name}}" required="{{item.required}}">
+								<label>
+									<input type="checkbox">
+									{{item.label}}
+								</label>
+							</div>
+
+							<div class="radio" ng-if="item.elem == 'radio'" ng-repeat="option in item.options">
+							  <label>
+							    <input type="radio" name="{{item.name}}" id="optionsRadios1" value="{{option.value}}" ng-required="{{item.required}}">
+							    {{option.value}}
+							  </label>
+							</div>
+
+							<select class="form-control" ng-if="item.elem == 'select'" ng-model="myColor" ng-options="thing.value for thing in item.options" ng-required="{{item.required}}"></select>
+
+							<button type="button" class="btn btn-primary btn-xs editButton" ng-click="Edit(item)">Edit</button>
+							<button type="button" class="btn btn-danger btn-xs removeButton" ng-click="Remove($index)">Remove</button>
+
+						</div>
+					</form>
+				</div>
+				<!-- End Form Builder -->
+		    </tab>
+
+		    <tab heading="Form Settings" ng-show="ShowBuilder">
+		      
+				<form novalidate name="FormSettings">
+				  <div class="form-group">
+				    <label for="exampleInputEmail1">Give this form a name</label>
+				    <input type="text" class="form-control" id="exampleInputEmail1" ng-model="Form.name" placeholder="Form Name">
+				  </div>
+
+				  <div class="form-group">
+				    <label for="exampleInputEmail1">What email should the results of this form be sent to?</label>
+				    <input type="email" class="form-control" id="exampleInputEmail1" ng-model="Form.emailTo" placeholder="Enter Email">
+				  </div>
+
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" ng-model="Form.secured"> Do you want to create a pin number for users to access this form?
+					</label>
+				</div>
+				<div class="form-group" ng-show="Form.secured">
+					<label for="pin">Choose a PIN code to access your form.</label>
+					<input type="text" class="form-control" placeholder="Pin" ng-model="Form.pin">
+				</div>
+				  
+				  <button type="submit" class="btn btn-success" ng-click="SaveCurrentForm()">Save Form</button>
+				</form>
+
+		    </tab>
+
+		    <tab heading="Publish your form" ng-show="ShowBuilder">
+		    	<hr>
+		    	<div class="row">
+		    		<div class="col-sm-4">
+		    			<p>Choose a background colour for your form page.</p>
+		    		</div>
+		    		<div class="col-sm-4">
+		    			<button colorpicker type="button" class="btn btn-info" style="background: {{Form.settings.BgColor}}" colorpicker-position="top" ng-model="Form.settings.BgColor">Choose Background Colour</button>
+		    		</div>
+		    		<div class="col-sm-4">
+		    			<div class="form-group">
+							<input type="text" class="form-control" placeholder="Hex Value" ng-model="Form.settings.BgColor">
+						</div>
+		    		</div>
+		    	</div>
+
+		    	<div class="row">
+		    		<div class="col-sm-6">
+		    			<button type="submit" class="btn btn-success" ng-click="SaveCurrentForm()">Save Form</button>
+		    		</div>
+		    		<div class="col-sm-6">
+		    			<button type="submit" ng-hide="Form.isLive" class="btn btn-info pull-right" ng-click="ToggleLive()">Publish this form</button>
+		    			<button type="submit" ng-show="Form.isLive" class="btn btn-danger pull-right" ng-click="ToggleLive()">Take form offline</button>
+		    		</div>
+		    	</div>
+
+		    	<hr>
+		    	
+		    	
+		    </tab>
+		  </tabset>
+	</div>
+
+	<div class="container">
+		<hr>
+		<div class="row" ng-show="Form.selected">
+			<div ng-show="Form.isLive" class="alert alert-success">This form is currently live</div>
+			<div ng-hide="Form.isLive" class="alert alert-warning">This form is currently offline</div>
+		</div>
+	</div>
+
+
+
+	<!-- <div class="container">
+		<div class="col-sm-3">
+			<div class="form-group">
+				<p>Add a form element</p>
+				<button type="submit" class="btn btn-primary btn-block" ng-click="AddElementOptions('input')">Add text input</button>
+				<button type="submit" class="btn btn-primary btn-block" ng-click="AddElementOptions('textarea')">Add text area</button>
+				<button type="submit" class="btn btn-primary btn-block" ng-click="AddElementOptions('checkbox')">Add checkbox</button>
+				<button type="submit" class="btn btn-primary btn-block" ng-click="AddElementOptions('radio')">Add radio button group</button>
+				<button type="submit" class="btn btn-primary btn-block" ng-click="AddElementOptions('select')">Add select box</button>
+			</div>
+		</div>
+		<div class="col-sm-9">
+			
+			Your form:
+
+			<form novalidate name="FormDemo">
+				<div class="form-group" ng-repeat="item in Form track by $index">
+					<label for="inputEmail3" class="col-sm-12 control-label">{{item.label}}</label>
+					<input ng-if="item.elem == 'input'" name="{{item.name}}" type="{{item.type}}" ng-model="DemoForm[item.name]" class="form-control" placeholder="{{item.placeholder}}" ng-required="{{item.required}}">
+
+					<textarea ng-if="item.elem == 'textarea'" class="form-control" name="{{item.name}}" rows="3" placeholder="{{item.placeholder}}" ng-required="{{item.required}}"></textarea>
+
+					<div class="checkbox" ng-if="item.elem == 'checkbox'" name="{{item.name}}" required="{{item.required}}">
+						<label>
+							<input type="checkbox">
+						</label>
+					</div>
+
+					<div class="radio" ng-if="item.elem == 'radio'" ng-repeat="option in item.options">
+					  <label>
+					    <input type="radio" name="{{item.name}}" id="optionsRadios1" value="{{option.value}}" ng-required="{{item.required}}">
+					    {{option.value}}
+					  </label>
+					</div>
+
+					<select class="form-control" ng-if="item.elem == 'select'" ng-model="myColor" ng-options="thing.value for thing in item.options" ng-required="{{item.required}}"></select>
+
+					<button type="button" class="btn btn-primary btn-xs editButton" ng-click="Edit(item)">Edit</button>
+					<button type="button" class="btn btn-danger btn-xs removeButton" ng-click="Remove($index)">Remove</button>
+
+				</div>
+			</form>
+		</div>
+	</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+	<div ng-controller="MainCtrl">
+	    <script type="text/ng-template" id="myModalContent.html">
+	        <div class="modal-header">
+	            <h3 class="modal-title">Form input details</h3>
+	        </div>
+	        <div class="modal-body">
+	            <div class="modal-body">
+
+
+					<div class="form-group">
+						<label for="exampleInputEmail1">Input Label</label>
+						<input type="text" class="form-control" id="exampleInputEmail1" placeholder="Label" ng-model="Element.label" ng-change="EditInputName()">
+					</div>
+
+					<label ng-show="Element.elem == 'input'">Select Input type</label>
+					<select class="form-control" ng-show="Element.elem == 'input'" ng-model="Element.type">
+					  <option value="text">text</option>
+					  <option value="email">email</option>
+					  <option value="password">password</option>
+					</select>
+
+					<div class="form-group" ng-show="Element.elem == 'input' || Element.elem == 'textarea'">
+						<label for="exampleInputEmail2">Placeholder</label>
+						<input type="text" class="form-control" id="exampleInputEmail2" placeholder="Placeholder" ng-model="Element.placeholder">
+					</div>
+
+					<div class="form-group">
+						<label for="exampleInputEmail2">Give this input a name(No spaces or special characters)</label>
+						<input type="text" class="form-control" id="exampleInputEmail2" placeholder="Name of Input" ng-model="Element.name">
+					</div>
+
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" ng-model="Element.required"> Required field
+						</label>
+					</div>
+
+
+					<label ng-show="Element.elem == 'radio' || Element.elem == 'select'">Options</label>
+					<div class="form-group" ng-repeat="option in Element.options" ng-show="Element.elem == 'radio' || Element.elem == 'select'">
+						<input type="text" class="form-control" placeholder="Label" ng-model="option.value">
+					</div>
+					<button ng-show="Element.elem == 'radio' || Element.elem == 'select'" type="button" class="btn btn-primary" ng-click="AddOption()">Add option</button>
+
+
+
+		        </div>
+	        </div>
+	        <div class="modal-footer">
+	            <button class="btn btn-primary" ng-click="ok()">OK</button>
+	            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+	        </div>
+	    </script>
+	</div>
+
+	<div ng-controller="MainCtrl">
+	    <script type="text/ng-template" id="signUpForm.html">
+	        <div class="modal-header">
+	            <h3 class="modal-title">Create an account</h3>
+	        </div>
+	        <div class="modal-body">
+	            <div class="modal-body">
+
+
+					<form novalidate name="SignUpForm">
+						<div class="form-group">
+							<label for="username">Username</label>
+							<input type="text" class="form-control" placeholder="Username" ng-model="User.username" required>
+						</div>
+						<div class="form-group">
+							<label for="email">Email Address</label>
+							<input type="email" class="form-control" placeholder="Email" ng-model="User.email" required>
+						</div>
+						<div class="form-group">
+							<label for="password">Password</label>
+							<input type="password" class="form-control" placeholder="Password" ng-model="User.password" required>
+						</div>
+					</form>
+		        </div>
+	        </div>
+	        <div class="modal-footer">
+	            <button class="btn btn-success" ng-click="CreateAccount()">Create Account</button>
+	            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+	        </div>
+	    </script>
+	</div>
+
+	<div ng-controller="MainCtrl">
+	    <script type="text/ng-template" id="loginForm.html">
+	        <div class="modal-header">
+	            <h3 class="modal-title">Log in to your account</h3>
+	        </div>
+	        <div class="modal-body">
+	            <div class="modal-body">
+
+
+					<form novalidate name="SignUpForm">
+						<div class="form-group">
+							<label for="username">Username</label>
+							<input type="text" class="form-control" placeholder="Username" ng-model="User.username" required>
+						</div>
+						<div class="form-group">
+							<label for="password">Password</label>
+							<input type="password" class="form-control" placeholder="Password" ng-model="User.password" required>
+						</div>
+					</form>
+		        </div>
+	        </div>
+	        <div class="modal-footer">
+	            <button class="btn btn-success" ng-click="LoginUser()">Log In</button>
+	            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+	        </div>
+	    </script>
+	</div>
+
+	<div ng-controller="MainCtrl">
+	    <script type="text/ng-template" id="newForm.html">
+	        <div class="modal-header">
+	            <h3 class="modal-title">Create a a new form</h3>
+	        </div>
+	        <div class="modal-body">
+	            <div class="modal-body">
+
+
+					<form novalidate name="NewFormForm">
+						<div class="form-group">
+							<label for="username">Name your form</label>
+							<input type="text" class="form-control" placeholder="Form Name" ng-model="Form.name" required>
+						</div>
+						<div class="form-group">
+							<label for="email">Email address to send results</label>
+							<input type="email" class="form-control" placeholder="Email" ng-model="Form.emailTo" required>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="Form.secured"> Do you want to create a pin number for users to access this form?
+							</label>
+						</div>
+						<div class="form-group" ng-show="Form.secured">
+							<label for="pin">Choose a PIN code to access your form.</label>
+							<input type="text" class="form-control" placeholder="Pin" ng-model="Form.pin">
+						</div>
+					</form>
+		        </div>
+	        </div>
+	        <div class="modal-footer">
+	            <button class="btn btn-success" ng-click="CreateForm()">Create Form</button>
+	            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+	        </div>
+	    </script>
+	</div>
+
+</body>
+</html>

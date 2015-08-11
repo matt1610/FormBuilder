@@ -1,0 +1,33 @@
+{
+  "name": "WaveHunterRESTAPI",
+  "version": "0.0.1",
+  "description": "WaveHunter API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "",
+    "cors": "",
+    "express": "~4.9.x",
+    "mongodb": "",
+    "mongodb-uri": "",
+    "mongoose": "",
+    "passport": "",
+    "passport-http": "^0.2.2"
+  },
+  "engines": {
+    "node": "0.10.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
+}

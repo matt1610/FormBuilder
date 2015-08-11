@@ -1,0 +1,66 @@
+
+
+input.ng-touched.ng-invalid-required {
+	border-color: red;
+}
+
+.editButton {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.removeButton {
+	position: absolute;
+	top: 0;
+	right: 50px;
+}
+
+.form-group {
+	position: relative;
+}
+
+.tabbable li {
+	cursor: pointer;
+}
+
+html, body {
+	height: 100%;
+}
+
+.veil {
+	height: 100%;
+	background: rgba(47, 47, 47, 0.5);
+	position: absolute;
+	width: 100%;
+	z-index: 10000000;
+	transition: all 0.5s ease;
+}
+
+svg {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin:auto;
+	width: 80px;
+	height: 80px;
+}
+
+svg path {
+	fill: blue;
+}
+
+.selected td, .selected th {
+	background: #18bc9c;
+	color: #fff;
+}
+
+
+
+
+
+
+
+
