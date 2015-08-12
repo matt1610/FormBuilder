@@ -22,5 +22,6 @@ FormViewer.factory('API', function(APIPATH, $http){
 })
 
 .factory('APIPATH', function(){
-	return 'http://localhost:5000';
+	// return 'http://localhost:5000';
+	return 'http://applififormbuilder.azurewebsites.net/';
 })
