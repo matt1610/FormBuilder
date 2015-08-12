@@ -15,16 +15,53 @@
 </head>
 <body ng-controller="MainCtrl">
 	<div class="backGround" style="background-color: {{Form.settings.BgColor}}">
-		<!-- <p>{{Form}}</p> -->
+		<div class="veil" ng-show="Loading">
+	      <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" stroke="#fff">
+	        <g fill="none" fill-rule="evenodd" stroke-width="2">
+	            <circle cx="22" cy="22" r="1">
+	                <animate attributeName="r"
+	                    begin="0s" dur="1.8s"
+	                    values="1; 20"
+	                    calcMode="spline"
+	                    keyTimes="0; 1"
+	                    keySplines="0.165, 0.84, 0.44, 1"
+	                    repeatCount="indefinite" />
+	                <animate attributeName="stroke-opacity"
+	                    begin="0s" dur="1.8s"
+	                    values="1; 0"
+	                    calcMode="spline"
+	                    keyTimes="0; 1"
+	                    keySplines="0.3, 0.61, 0.355, 1"
+	                    repeatCount="indefinite" />
+	            </circle>
+	            <circle cx="22" cy="22" r="1">
+	                <animate attributeName="r"
+	                    begin="-0.9s" dur="1.8s"
+	                    values="1; 20"
+	                    calcMode="spline"
+	                    keyTimes="0; 1"
+	                    keySplines="0.165, 0.84, 0.44, 1"
+	                    repeatCount="indefinite" />
+	                <animate attributeName="stroke-opacity"
+	                    begin="-0.9s" dur="1.8s"
+	                    values="1; 0"
+	                    calcMode="spline"
+	                    keyTimes="0; 1"
+	                    keySplines="0.3, 0.61, 0.355, 1"
+	                    repeatCount="indefinite" />
+	            </circle>
+	        </g>
+	    </svg>
+	  </div>
 
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-6 col-sm-offset-3">
+				<div class="col-sm-6 col-sm-offset-3" ng-if="!Form.offline" ng-show="PinMatched">
 					<!-- Form -->
 						<hr>
 						<h4>{{Form.name}}</h4>
 						<hr>
-						<form novalidate name="UserForm">
+						<form novalidate name="form.UserForm">
 							<div class="form-group" ng-repeat="item in Form.fields track by $index">
 								<label for="inputEmail3" class="col-sm-12 control-label" ng-if="item.elem != 'checkbox'">{{item.label}}</label>
 								<input ng-if="item.elem == 'input'" name="{{item.name}}" type="{{item.type}}" ng-model="FormModel[item.name]" class="form-control" placeholder="{{item.placeholder}}" ng-required="{{item.required}}">
@@ -47,15 +84,32 @@
 
 								<select class="form-control" ng-if="item.elem == 'select'" ng-model="FormModel[item.name]" ng-options="thing.value for thing in item.options" ng-required="{{item.required}}"></select>
 
-								<div ng-show="UserForm.$submitted || UserForm[item.name].$touched">
-									<div class="alert alert-danger requiredAlert" ng-show="UserForm[item.name].$error.required" role="alert">This field is required</div>
+								<div ng-show="form.UserForm.$submitted || form.UserForm[item.name].$touched">
+									<div class="alert alert-danger requiredAlert" ng-show="form.UserForm[item.name].$error.required" role="alert">This field is required</div>
 								</div>
 
 							</div>
+							<button type="button" class="btn btn-success btn-block" ng-click="SubmitForm()" ng-show="form.UserForm.$valid">Submit</button>
 						</form>
+						
 					<!--  -->
-					<button type="button" class="btn btn-primary" ng-click="ShowModel()">Test</button>
 				</div>
+
+				<div class="col-sm-6 col-sm-offset-3" ng-show="Form.offline">
+					<hr>
+					<h2 style="text-align: center">{{Form.message}}</h2>
+				</div>
+
+				<div class="col-sm-6 col-sm-offset-3" ng-hide="PinMatched">
+					<h3>Enter PIN</h3>
+					<hr>
+					<div class="form-group">
+					    <label for="exampleInputEmail1">Please enter the PIN number to access this form</label>
+					    <input type="text" class="form-control" id="exampleInputEmail1" ng-model="PIN" placeholder="PIN">
+					  </div>
+					  <button type="button" class="btn btn-success btn-block" ng-click="SubmitPIN()">Submit</button>
+				</div>
+
 			</div>
 		</div>
 

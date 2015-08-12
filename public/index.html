@@ -82,7 +82,7 @@
 		<div class="page-header">
 		  <h1 ng-show="{{Message.length > 0}}">{{Message}}</h1>
 		  <h1>Welcome to the Form Builder.</h1>
-		  <h3>You are currently editing : <button class="btn btn-success disabled">{{Form.name}}</button></h3>
+		  <h3>You are currently editing : <button class="btn btn-success disabled alertCustom">{{Form.name}}</button></h3>
 		  <hr>
 		  <!-- <p>This is where you will build your form and select where the results are sent to.</p> -->
 		  <button type="submit" class="btn btn-success" ng-click="NewForm()">New Form</button>
@@ -109,7 +109,7 @@
 		                <th scope="row" class="hidden-xs">{{$index + 1}}</th>
 		                <td>{{form.name}}</td>
 		                <td>{{form.emailTo}}</td>
-		                <td>{{form.responses}}</td>
+		                <td>{{form.responses.length}}</td>
 		                <td>
 		                  <button type="button" class="btn btn-success" ng-click="EditInBuilder(form)">Edit</button>
 		                  <button type="button" class="btn btn-danger" ng-click="Delete(form)">Delete Form</button>
@@ -232,63 +232,40 @@
 		    	
 		    	
 		    </tab>
+
+		    <!-- Results -->
+		    <tab heading="Form Responses" ng-show="ShowBuilder">
+		    	<div class="table-responsive">
+		          <table class="table table-striped">
+		            <thead>
+		              <tr>
+		                <th class="hidden-xs">#</th>
+		                <th ng-repeat="(key, value) in Form.responses[0]">{{key}}</th>
+		              </tr>
+		            </thead>
+
+		            <tbody>
+		              <tr ng-repeat="response in Form.responses track by $index">
+		                <th scope="row" class="hidden-xs">{{$index + 1}}</th>
+		                <td ng-repeat="item in response" ng-show="item.value">{{item.value}}</td>
+		                <td ng-repeat="item in response" ng-hide="item.value">{{item}}</td>
+		              </tr>
+		            </tbody>
+
+		          </table>
+		      </div>
+		    </tab>
+
 		  </tabset>
 	</div>
 
 	<div class="container">
 		<hr>
 		<div class="row" ng-show="Form.selected">
-			<div ng-show="Form.isLive" class="alert alert-success">This form is currently live</div>
-			<div ng-hide="Form.isLive" class="alert alert-warning">This form is currently offline</div>
+			<div ng-show="Form.isLive" class="alert alert-success alertCustom">This form is currently live at <a target="_blank" class="formLink" href="{{APIPATH}}/viewForm?formID={{Form._id}}">{{APIPATH}}/viewForm?formID={{Form._id}}</a></div>
+			<div ng-hide="Form.isLive" class="alert alert-warning alertCustom">This form is currently offline</div>
 		</div>
 	</div>
-
-
-
-	<!-- <div class="container">
-		<div class="col-sm-3">
-			<div class="form-group">
-				<p>Add a form element</p>
-				<button type="submit" class="btn btn-primary btn-block" ng-click="AddElementOptions('input')">Add text input</button>
-				<button type="submit" class="btn btn-primary btn-block" ng-click="AddElementOptions('textarea')">Add text area</button>
-				<button type="submit" class="btn btn-primary btn-block" ng-click="AddElementOptions('checkbox')">Add checkbox</button>
-				<button type="submit" class="btn btn-primary btn-block" ng-click="AddElementOptions('radio')">Add radio button group</button>
-				<button type="submit" class="btn btn-primary btn-block" ng-click="AddElementOptions('select')">Add select box</button>
-			</div>
-		</div>
-		<div class="col-sm-9">
-			
-			Your form:
-
-			<form novalidate name="FormDemo">
-				<div class="form-group" ng-repeat="item in Form track by $index">
-					<label for="inputEmail3" class="col-sm-12 control-label">{{item.label}}</label>
-					<input ng-if="item.elem == 'input'" name="{{item.name}}" type="{{item.type}}" ng-model="DemoForm[item.name]" class="form-control" placeholder="{{item.placeholder}}" ng-required="{{item.required}}">
-
-					<textarea ng-if="item.elem == 'textarea'" class="form-control" name="{{item.name}}" rows="3" placeholder="{{item.placeholder}}" ng-required="{{item.required}}"></textarea>
-
-					<div class="checkbox" ng-if="item.elem == 'checkbox'" name="{{item.name}}" required="{{item.required}}">
-						<label>
-							<input type="checkbox">
-						</label>
-					</div>
-
-					<div class="radio" ng-if="item.elem == 'radio'" ng-repeat="option in item.options">
-					  <label>
-					    <input type="radio" name="{{item.name}}" id="optionsRadios1" value="{{option.value}}" ng-required="{{item.required}}">
-					    {{option.value}}
-					  </label>
-					</div>
-
-					<select class="form-control" ng-if="item.elem == 'select'" ng-model="myColor" ng-options="thing.value for thing in item.options" ng-required="{{item.required}}"></select>
-
-					<button type="button" class="btn btn-primary btn-xs editButton" ng-click="Edit(item)">Edit</button>
-					<button type="button" class="btn btn-danger btn-xs removeButton" ng-click="Remove($index)">Remove</button>
-
-				</div>
-			</form>
-		</div>
-	</div> -->
 
 
 

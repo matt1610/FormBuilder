@@ -53,10 +53,21 @@ svg path {
 }
 
 .selected td, .selected th {
-	background: #18bc9c;
+	background: rgba(24, 188, 156, 0.4);
 	color: #fff;
 }
 
+.alertCustom {
+	padding: 5px 10px;
+}
+
+.formLink {
+	color: #fff;
+}
+
+.formLink:hover {
+	color: black;
+}
 
 
 

@@ -13,7 +13,8 @@ exports.newForm = function(req, res) {
     secured : req.body.secured,
     pin : req.body.pin,
     settings : req.body.settings,
-    isLive : false
+    isLive : false,
+    responses : []
   });
   
   form.save(function(err, form) {
@@ -24,9 +25,7 @@ exports.newForm = function(req, res) {
     } else{
       res.json({ message: 'Form Saved', success : true, form : form });
     }
-      
 
-    
   });
 };
 
@@ -60,8 +59,18 @@ exports.getAllUserForms = function(req, res) {
   })
 }
 
+exports.postFormResponse = function(req, res) {
+  Form.update({_id : req.body.id}, {$push : {responses : req.body.response}}).exec(function(err, data) {
+    if (err) {
+      res.json({success : false, message : err});
+    } else {
+      res.json({success : true, message : 'Form submitted successfully', data : data});
+    }
+  })
+}
+
 exports.getFormById = function(req, res) {
-  Form.find({_id : req.body.id}).limit(1).exec(function(err, forms) {
+  Form.find({_id : req.body.id}, {responses : 0}).limit(1).exec(function(err, forms) {
     if (err) {
       res.json({success : false, message : err});
     } else {
@@ -81,8 +90,3 @@ exports.getUsers = function(req, res) {
   });
 };
 
-
-// Remove
-// User.find({ _id : req.body._id }).remove().exec(function(response) {
-//   res.json(response);
-// });

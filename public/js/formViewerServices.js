@@ -9,6 +9,14 @@ FormViewer.factory('API', function(APIPATH, $http){
 				data : {id : id},
 				headers : {'Content-Type': 'application/json'}
 			});
+		},
+		PostFormResponse : function(id, response) {
+			return $http({
+				method : 'POST',
+				url : APIPATH + '/postFormResponse',
+				data : {id : id, response : response},
+				headers : {'Content-Type': 'application/json'}
+			});
 		}
 	};
 })

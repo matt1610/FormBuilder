@@ -16,7 +16,8 @@ var FormSchema = new mongoose.Schema({
 	secured : Boolean,
 	pin : String,
 	settings : Object,
-	isLive : Boolean
+	isLive : Boolean,
+	responses : Array
 });
 
 
