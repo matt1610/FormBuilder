@@ -135,6 +135,9 @@ var FormBuilder = angular.module('DataCapture', ['ui.bootstrap','colorpicker.mod
 	      API.CreateNewForm(form).then(function(response) {
 	      	if (response.data.message) {
 	      		$scope.Form = response.data.form;
+	      		if (!$scope.AllForms) {
+	      			$scope.AllForms = [];
+	      		};
 	      		$scope.AllForms.push(response.data.form);
 	      	};
 	      	$scope.Loading = false;
