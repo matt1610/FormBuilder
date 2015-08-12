@@ -355,7 +355,7 @@
 		        </div>
 	        </div>
 	        <div class="modal-footer">
-	            <button class="btn btn-success" ng-click="CreateAccount()">Create Account</button>
+	            <button class="btn btn-success" ng-click="CreateAccount()" ng-show="SignUpForm.$valid">Create Account</button>
 	            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
 	        </div>
 	    </script>
@@ -370,7 +370,7 @@
 	            <div class="modal-body">
 
 
-					<form novalidate name="SignUpForm">
+					<form novalidate name="LoginForm">
 						<div class="form-group">
 							<label for="username">Email Address</label>
 							<input type="email" class="form-control" placeholder="Email Address" ng-model="User.email" required>
@@ -383,7 +383,7 @@
 		        </div>
 	        </div>
 	        <div class="modal-footer">
-	            <button class="btn btn-success" ng-click="LoginUser()">Log In</button>
+	            <button class="btn btn-success" ng-click="LoginUser()" ng-show="LoginForm.$valid">Log In</button>
 	            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
 	        </div>
 	    </script>

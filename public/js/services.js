@@ -14,7 +14,7 @@ FormBuilder.factory('API', function($http, APIPATH, Local, Base64){
 		},
 		CreateNewForm : function(form) {
 			form.ownerEmail = Local.GetLogin().user.email;
-			$http.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode(Local.GetLogin().user.username + ':' + Local.GetLogin().user.password);
+			$http.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode(Local.GetLogin().user.email + ':' + Local.GetLogin().user.password);
 			return $http({
 				method : 'POST',
 				url : APIPATH + '/newForm',
@@ -24,7 +24,7 @@ FormBuilder.factory('API', function($http, APIPATH, Local, Base64){
 		},
 		SaveForm : function(form) {
 			form.ownerEmail = Local.GetLogin().user.email;
-			$http.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode(Local.GetLogin().user.username + ':' + Local.GetLogin().user.password);
+			$http.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode(Local.GetLogin().user.email + ':' + Local.GetLogin().user.password);
 			return $http({
 				method : 'POST',
 				url : APIPATH + '/saveForm',
@@ -33,11 +33,11 @@ FormBuilder.factory('API', function($http, APIPATH, Local, Base64){
 			});
 		},
 		GetAllUserForms : function(user) {
-			$http.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode(user.username + ':' + user.password);
+			$http.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode(user.email + ':' + user.password);
 			return $http({
 				method : 'POST',
 				url : APIPATH + '/getAllUserForms',
-				data : user.email,
+				data : {email : user.email},
 				headers : {'Content-Type': 'application/json'}
 			});
 		}

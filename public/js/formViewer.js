@@ -13,6 +13,7 @@ var FormViewer = angular.module('FormViewer', [])
 		if (response.data.success) {
 			if (response.data.forms[0].isLive) {
 				$scope.Form = response.data.forms[0];
+				$scope.PinMatched = true;
 				if ($scope.Form.secured) {
 					$scope.PinMatched = false;
 				};
