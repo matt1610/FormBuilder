@@ -143,25 +143,25 @@
 					<form novalidate name="FormDemo">
 						<div class="form-group" ng-repeat="item in Form.fields track by $index">
 							<label for="inputEmail3" class="col-sm-12 control-label" ng-if="item.elem != 'checkbox'">{{item.label}}</label>
-							<input ng-if="item.elem == 'input'" name="{{item.name}}" type="{{item.type}}" ng-model="DemoForm[item.name]" class="form-control" placeholder="{{item.placeholder}}" ng-required="{{item.required}}">
+							<input ng-if="item.elem == 'input'" name="{{item.name}}" type="{{item.type}}" ng-model="DemoForm[item.name]" class="form-control" placeholder="{{item.placeholder}}" ng-required="{{item.required}}" disabled>
 
-							<textarea ng-if="item.elem == 'textarea'" class="form-control" name="{{item.name}}" rows="3" placeholder="{{item.placeholder}}" ng-required="{{item.required}}"></textarea>
+							<textarea ng-if="item.elem == 'textarea'" class="form-control" name="{{item.name}}" rows="3" placeholder="{{item.placeholder}}" ng-required="{{item.required}}" disabled></textarea>
 
 							<div class="checkbox" ng-if="item.elem == 'checkbox'" name="{{item.name}}" required="{{item.required}}">
 								<label>
-									<input type="checkbox">
+									<input type="checkbox" disabled>
 									{{item.label}}
 								</label>
 							</div>
 
 							<div class="radio" ng-if="item.elem == 'radio'" ng-repeat="option in item.options">
 							  <label>
-							    <input type="radio" name="{{item.name}}" id="optionsRadios1" value="{{option.value}}" ng-required="{{item.required}}">
+							    <input type="radio" name="{{item.name}}" id="optionsRadios1" value="{{option.value}}" ng-required="{{item.required}}" disabled>
 							    {{option.value}}
 							  </label>
 							</div>
 
-							<select class="form-control" ng-if="item.elem == 'select'" ng-model="myColor" ng-options="thing.value for thing in item.options" ng-required="{{item.required}}"></select>
+							<select class="form-control" ng-if="item.elem == 'select'" ng-model="myColor" ng-options="thing.value for thing in item.options" ng-required="{{item.required}}" disabled></select>
 
 							<button type="button" class="btn btn-primary btn-xs editButton" ng-click="Edit(item)">Edit</button>
 							<button type="button" class="btn btn-danger btn-xs removeButton" ng-click="Remove($index)">Remove</button>
