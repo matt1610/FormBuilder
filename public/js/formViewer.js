@@ -15,5 +15,11 @@ var FormViewer = angular.module('FormViewer', [])
 		} else {
 			alert(response.data.message);
 		}
-	})
+	});
+
+	$scope.FormModel = {};
+
+	$scope.ShowModel = function() {
+		console.log($scope.FormModel);
+	}
 })

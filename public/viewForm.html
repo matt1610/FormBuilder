@@ -15,7 +15,47 @@
 </head>
 <body ng-controller="MainCtrl">
 	<div class="backGround" style="background-color: {{Form.settings.BgColor}}">
-		<p>{{Form}}</p>
+		<!-- <p>{{Form}}</p> -->
+
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6 col-sm-offset-3">
+					<!-- Form -->
+						<hr>
+						<h4>{{Form.name}}</h4>
+						<hr>
+						<form novalidate name="UserForm">
+							<div class="form-group" ng-repeat="item in Form.fields track by $index">
+								<label for="inputEmail3" class="col-sm-12 control-label" ng-if="item.elem != 'checkbox'">{{item.label}}</label>
+								<input ng-if="item.elem == 'input'" name="{{item.name}}" type="{{item.type}}" ng-model="FormModel[item.name]" class="form-control" placeholder="{{item.placeholder}}" ng-required="{{item.required}}">
+
+								<textarea ng-model="FormModel[item.name]" ng-if="item.elem == 'textarea'" class="form-control" name="{{item.name}}" rows="3" placeholder="{{item.placeholder}}" ng-required="{{item.required}}"></textarea>
+
+								<div class="checkbox" ng-if="item.elem == 'checkbox'" name="{{item.name}}" required="{{item.required}}">
+									<label>
+										<input type="checkbox" ng-model="FormModel[item.name]">
+										{{item.label}}
+									</label>
+								</div>
+
+								<div class="radio" ng-if="item.elem == 'radio'" ng-repeat="option in item.options">
+								  <label>
+								    <input type="radio" name="{{item.name}}" ng-model="FormModel[item.name]" id="optionsRadios1" value="{{option.value}}" ng-required="{{item.required}}">
+								    {{option.value}}
+								  </label>
+								</div>
+
+								<select class="form-control" ng-if="item.elem == 'select'" ng-model="FormModel[item.name]" ng-options="thing.value for thing in item.options" ng-required="{{item.required}}"></select>
+
+							</div>
+						</form>
+					<!--  -->
+					<button type="button" class="btn btn-primary" ng-click="ShowModel()">Test</button>
+				</div>
+			</div>
+		</div>
+
+
 	</div>
 	
 

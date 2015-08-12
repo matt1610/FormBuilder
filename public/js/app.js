@@ -148,7 +148,6 @@ var FormBuilder = angular.module('DataCapture', ['ui.bootstrap','colorpicker.mod
 		$scope.Loading = true;
 		API.SaveForm($scope.Form).then(function(response) {
 			if (response.data.success) {
-				console.log(response);
 				$scope.Loading = false;
 			} else {
 				$scope.Error = {message : response.data.message};

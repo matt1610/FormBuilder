@@ -4,3 +4,7 @@ html, body, .backGround {
 	width: 100%;
 	height: 100%;
 }
+
+input.ng-touched.ng-invalid-required, textarea.ng-touched.ng-invalid-required, select.ng-touched.ng-invalid-required {
+	border-color: red;
+}
