@@ -8,3 +8,10 @@ html, body, .backGround {
 input.ng-touched.ng-invalid-required, textarea.ng-touched.ng-invalid-required, select.ng-touched.ng-invalid-required {
 	border-color: red;
 }
+
+.requiredAlert {
+    padding: 5px 10px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+        margin-top: -2px;
+}

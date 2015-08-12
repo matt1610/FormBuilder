@@ -47,6 +47,10 @@
 
 								<select class="form-control" ng-if="item.elem == 'select'" ng-model="FormModel[item.name]" ng-options="thing.value for thing in item.options" ng-required="{{item.required}}"></select>
 
+								<div ng-show="UserForm.$submitted || UserForm[item.name].$touched">
+									<div class="alert alert-danger requiredAlert" ng-show="UserForm[item.name].$error.required" role="alert">This field is required</div>
+								</div>
+
 							</div>
 						</form>
 					<!--  -->
