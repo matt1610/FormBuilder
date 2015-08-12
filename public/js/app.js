@@ -82,6 +82,7 @@ var FormBuilder = angular.module('DataCapture', ['ui.bootstrap','colorpicker.mod
 					console.log(response)
 				}
 				$scope.Loading = false;
+				$scope.FetchForms(user);
 			});
 			
 	    }, function () {
