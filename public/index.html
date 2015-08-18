@@ -134,12 +134,19 @@
 						<button type="submit" class="btn btn-info btn-block btn-sm" ng-click="AddElementOptions('radio')">Add radio button group</button>
 						<button type="submit" class="btn btn-info btn-block btn-sm" ng-click="AddElementOptions('select')">Add select box</button>
 						<hr>
+						<p>Choose a background colour for your form page.</p>
+						<button colorpicker type="button" class="btn btn-info btn-block btn-sm" style="background: {{Form.settings.BgColor}}" colorpicker-position="top" ng-model="Form.settings.BgColor">Choose Background Colour</button>
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Hex Value" ng-model="Form.settings.BgColor">
+						</div>
+						<hr>
+
 						<button type="submit" class="btn btn-success btn-block" ng-click="SaveCurrentForm()">Save Form</button>
 					</div>
 				</div>
 				<div class="col-sm-9">
 					<hr>
-					<h4>{{Form.name}}</h4>
+					<h4>{{Form.name}} : Preview</h4>
 					<hr>
 					<form novalidate name="FormDemo">
 						<div class="form-group" ng-repeat="item in Form.fields track by $index">
@@ -203,7 +210,7 @@
 
 		    <tab heading="Publish your form" ng-show="ShowBuilder">
 		    	<hr>
-		    	<div class="row">
+		    	<!-- <div class="row">
 		    		<div class="col-sm-4">
 		    			<p>Choose a background colour for your form page.</p>
 		    		</div>
@@ -215,7 +222,7 @@
 							<input type="text" class="form-control" placeholder="Hex Value" ng-model="Form.settings.BgColor">
 						</div>
 		    		</div>
-		    	</div>
+		    	</div> -->
 
 		    	<div class="row">
 		    		<div class="col-sm-6">
