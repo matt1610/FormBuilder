@@ -115,6 +115,7 @@ var FormBuilder = angular.module('DataCapture', ['ui.bootstrap','colorpicker.mod
 			$scope.AllForms[i].selected = false;
 		};
 		form.selected = true;
+		console.log(form);
 	}
 
 	$scope.NewForm = function() {
@@ -166,7 +167,6 @@ var FormBuilder = angular.module('DataCapture', ['ui.bootstrap','colorpicker.mod
 	$scope.FetchForms = function(user) {
 		$scope.Loading = true;
 		API.GetAllUserForms(user).then(function(response) {
-			console.log(response);
 			if (response.data.success) {
 				$scope.AllForms = response.data.forms;
 				Local.Store(user);

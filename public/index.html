@@ -128,11 +128,11 @@
 						<hr>
 						<h4>Add form elements</h4>
 						<hr>
-						<button type="submit" class="btn btn-info btn-block btn-sm" ng-click="AddElementOptions('input')">Add text input</button>
-						<button type="submit" class="btn btn-info btn-block btn-sm" ng-click="AddElementOptions('textarea')">Add text area</button>
-						<button type="submit" class="btn btn-info btn-block btn-sm" ng-click="AddElementOptions('checkbox')">Add checkbox</button>
-						<button type="submit" class="btn btn-info btn-block btn-sm" ng-click="AddElementOptions('radio')">Add radio button group</button>
-						<button type="submit" class="btn btn-info btn-block btn-sm" ng-click="AddElementOptions('select')">Add select box</button>
+						<button type="submit" class="btn btn-info btn-block btn-sm noHoverButton" ng-click="AddElementOptions('input')">Add text input</button>
+						<button type="submit" class="btn btn-info btn-block btn-sm noHoverButton" ng-click="AddElementOptions('textarea')">Add text area</button>
+						<button type="submit" class="btn btn-info btn-block btn-sm noHoverButton" ng-click="AddElementOptions('checkbox')">Add checkbox</button>
+						<button type="submit" class="btn btn-info btn-block btn-sm noHoverButton" ng-click="AddElementOptions('radio')">Add radio button group</button>
+						<button type="submit" class="btn btn-info btn-block btn-sm noHoverButton" ng-click="AddElementOptions('select')">Add select box</button>
 						<hr>
 						<p>Choose a background colour for your form page.</p>
 						<button colorpicker type="button" class="btn btn-info btn-block btn-sm" style="background: {{Form.settings.BgColor}}" colorpicker-position="top" ng-model="Form.settings.BgColor">Choose Background Colour</button>
@@ -210,19 +210,6 @@
 
 		    <tab heading="Publish your form" ng-show="ShowBuilder">
 		    	<hr>
-		    	<!-- <div class="row">
-		    		<div class="col-sm-4">
-		    			<p>Choose a background colour for your form page.</p>
-		    		</div>
-		    		<div class="col-sm-4">
-		    			<button colorpicker type="button" class="btn btn-info" style="background: {{Form.settings.BgColor}}" colorpicker-position="top" ng-model="Form.settings.BgColor">Choose Background Colour</button>
-		    		</div>
-		    		<div class="col-sm-4">
-		    			<div class="form-group">
-							<input type="text" class="form-control" placeholder="Hex Value" ng-model="Form.settings.BgColor">
-						</div>
-		    		</div>
-		    	</div> -->
 
 		    	<div class="row">
 		    		<div class="col-sm-6">
@@ -243,6 +230,14 @@
 
 		    <!-- Results -->
 		    <tab heading="Form Responses" ng-show="ShowBuilder">
+
+				<div class="row">
+					<div class="form-group col-sm-3">
+						<label>Filter:</label>
+						<input type="text" class="form-control" ng-model="searchText" placeholder="Filter">
+					</div>
+				</div>
+
 		    	<div class="table-responsive">
 		          <table class="table table-striped">
 		            <thead>
@@ -253,14 +248,16 @@
 		            </thead>
 
 		            <tbody>
-		              <tr ng-repeat="response in Form.responses track by $index">
+		              <tr ng-repeat="response in Form.responses | filter:searchText">
 		                <th scope="row" class="hidden-xs">{{$index + 1}}</th>
-		                <td ng-repeat="item in response" ng-show="item.value">{{item.value}}</td>
-		                <td ng-repeat="item in response" ng-hide="item.value">{{item}}</td>
+		                <td ng-repeat="item in response">{{item}}</td>
 		              </tr>
 		            </tbody>
 
 		          </table>
+
+
+
 		      </div>
 		    </tab>
 
@@ -271,7 +268,7 @@
 		<hr>
 		<div class="row" ng-show="Form.selected">
 			<div ng-show="Form.isLive" class="alert alert-success alertCustom">This form is currently live at <a target="_blank" class="formLink" href="{{APIPATH}}/viewForm?formID={{Form._id}}">{{APIPATH}}/viewForm?formID={{Form._id}}</a></div>
-			<div ng-hide="Form.isLive" class="alert alert-warning alertCustom">This form is currently offline</div>
+			<div ng-hide="Form.isLive" class="alert alert-warning alertCustom">This form is currently in preview mode and is not publically available.</div>
 		</div>
 	</div>
 

@@ -69,6 +69,25 @@ svg path {
 	color: black;
 }
 
+.noHoverButton:hover {
+	margin-top: 5px;
+	border-bottom-width: 4px;
+	background: #5fc1e8;
+}
+
+.previewTxt {
+	background: #ff4136;
+	padding: 4px 8px;
+	border-radius: 4px;
+	color: #fff;
+}
+
+
+
+
+
+
+
 
 
 

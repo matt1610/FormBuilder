@@ -31,6 +31,13 @@ var FormViewer = angular.module('FormViewer', [])
 
 	$scope.SubmitForm = function() {
 		$scope.Loading = true;
+
+		for(x in $scope.FormModel) {
+			if ($scope.FormModel[x].hasOwnProperty('value')) {
+				$scope.FormModel[x] = $scope.FormModel[x].value;
+			};
+		}
+		
 		API.PostFormResponse($scope.Form._id, $scope.FormModel).then(function(response) {
 			if (response.data.success) {
 				alert(response.data.message);
