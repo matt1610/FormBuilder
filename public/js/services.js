@@ -33,11 +33,11 @@ FormBuilder.factory('API', function($http, APIPATH, Local, Base64){
 			});
 		},
 		GetAllUserForms : function(user) {
-			$http.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode(user.email + ':' + user.password);
+			// $http.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode(user.email + ':' + user.password);
 			return $http({
 				method : 'POST',
 				url : APIPATH + '/getAllUserForms',
-				data : {email : user.email},
+				data : user,
 				headers : {'Content-Type': 'application/json'}
 			});
 		}
@@ -45,8 +45,8 @@ FormBuilder.factory('API', function($http, APIPATH, Local, Base64){
 })
 
 .factory('APIPATH', function(){
-	// return 'http://localhost:5000';
-    return 'http://applififormbuilder.azurewebsites.net';
+	return 'http://localhost:5000';
+    // return 'http://applififormbuilder.azurewebsites.net';
 })
 
 .factory('Local', function(){

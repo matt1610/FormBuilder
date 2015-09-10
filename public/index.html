@@ -7,11 +7,13 @@
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
 	<script type="text/javascript" src="js/ui-bootstrap-tpls-0.9.0.js"></script>
 	<script type="text/javascript" src="js/bootstrap-colorpicker-module.min.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 	<script type="text/javascript" src="js/services.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="css/colorpicker.min.css">
 	<!-- <link rel="stylesheet" type="text/css" href="css/flat-ui.css"> -->
@@ -57,7 +59,7 @@
     </svg>
   </div>
 
-	<nav class="navbar navbar-default navbar-static-top">
+  	<nav class="navbar navbar-default navbar-static-top">
 		<div class="container">
 			<ul class="nav navbar-nav">
 				<!-- <li><a href="">New Form</a></li>
@@ -67,210 +69,265 @@
 		</div>
 	</nav>
 
-	<div class="container" ng-hide="LoggedIn">
-		<div class="jumbotron">
-		  <h1>Applifi Form Builder</h1>
-		  <p>A simple form builder service brought to you by Applifi.</p>
-		  <div class="alert alert-danger" ng-show="Error">{{Error.message}}</div>
-		  <p>
-		  	<a class="btn btn-success btn-lg" ng-click="SignUpModal()">Sign Up</a>
-			<a class="btn btn-success btn-lg" ng-click="LoginModal()">Log In</a>
-		  </p>
-		</div>
-	</div>
-
-	<div class="container" ng-show="LoggedIn">
-		<div class="page-header">
-		  <h1 ng-show="{{Message.length > 0}}">{{Message}}</h1>
-		  <h1>Welcome to the Form Builder.</h1>
-		  <h3>You are currently editing : <button class="btn btn-success disabled alertCustom">{{Form.name}}</button></h3>
-		  <hr>
-		  <!-- <p>This is where you will build your form and select where the results are sent to.</p> -->
-		  <button type="submit" class="btn btn-success" ng-click="NewForm()">New Form</button>
-		</div>
-	</div>
-
-	<div class="container" ng-show="LoggedIn">
-		<tabset>
-			<tab heading="My Forms">
-				<div class="table-responsive">
-		          <table class="table table-striped">
-		            <thead>
-		              <tr>
-		                <th class="hidden-xs">#</th>
-		                <th>Name</th>
-		                <th>Email (That gets the results)</th>
-		                <th>Responses</th>
-		                <th>Options</th>
-		              </tr>
-		            </thead>
-
-		            <tbody>
-		              <tr ng-repeat="form in AllForms track by $index" ng-class="{selected : form.selected}">
-		                <th scope="row" class="hidden-xs">{{$index + 1}}</th>
-		                <td>{{form.name}}</td>
-		                <td>{{form.emailTo}}</td>
-		                <td>{{form.responses.length}}</td>
-		                <td>
-		                  <button type="button" class="btn btn-success" ng-click="EditInBuilder(form)">Edit</button>
-		                  <button type="button" class="btn btn-danger" ng-click="Delete(form)">Delete Form</button>
-		                </td>
-		              </tr>
-		            </tbody>
-
-		          </table>
-		      </div>
-			</tab>
-		    <tab heading="Form Builder" ng-show="ShowBuilder">
-		    	<!-- Form Builder -->
-				<div class="col-sm-3">
-					<div class="form-group">
-						<hr>
-						<h4>Add form elements</h4>
-						<hr>
-						<button type="submit" class="btn btn-info btn-block btn-sm noHoverButton" ng-click="AddElementOptions('input')">Add text input</button>
-						<button type="submit" class="btn btn-info btn-block btn-sm noHoverButton" ng-click="AddElementOptions('textarea')">Add text area</button>
-						<button type="submit" class="btn btn-info btn-block btn-sm noHoverButton" ng-click="AddElementOptions('checkbox')">Add checkbox</button>
-						<button type="submit" class="btn btn-info btn-block btn-sm noHoverButton" ng-click="AddElementOptions('radio')">Add radio button group</button>
-						<button type="submit" class="btn btn-info btn-block btn-sm noHoverButton" ng-click="AddElementOptions('select')">Add select box</button>
-						<hr>
-						<p>Choose a background colour for your form page.</p>
-						<button colorpicker type="button" class="btn btn-info btn-block btn-sm" style="background: {{Form.settings.BgColor}}" colorpicker-position="top" ng-model="Form.settings.BgColor">Choose Background Colour</button>
-						<div class="form-group">
-							<input type="text" class="form-control" placeholder="Hex Value" ng-model="Form.settings.BgColor">
-						</div>
-						<hr>
-
-						<button type="submit" class="btn btn-success btn-block" ng-click="SaveCurrentForm()">Save Form</button>
-					</div>
-				</div>
-				<div class="col-sm-9">
-					<hr>
-					<h4>{{Form.name}} : Preview</h4>
-					<hr>
-					<form novalidate name="FormDemo">
-						<div class="form-group" ng-repeat="item in Form.fields track by $index">
-							<label for="inputEmail3" class="col-sm-12 control-label" ng-if="item.elem != 'checkbox'">{{item.label}}</label>
-							<input ng-if="item.elem == 'input'" name="{{item.name}}" type="{{item.type}}" ng-model="DemoForm[item.name]" class="form-control" placeholder="{{item.placeholder}}" ng-required="{{item.required}}" disabled>
-
-							<textarea ng-if="item.elem == 'textarea'" class="form-control" name="{{item.name}}" rows="3" placeholder="{{item.placeholder}}" ng-required="{{item.required}}" disabled></textarea>
-
-							<div class="checkbox" ng-if="item.elem == 'checkbox'" name="{{item.name}}" required="{{item.required}}">
-								<label>
-									<input type="checkbox" disabled>
-									{{item.label}}
-								</label>
-							</div>
-
-							<div class="radio" ng-if="item.elem == 'radio'" ng-repeat="option in item.options">
-							  <label>
-							    <input type="radio" name="{{item.name}}" id="optionsRadios1" value="{{option.value}}" ng-required="{{item.required}}" disabled>
-							    {{option.value}}
-							  </label>
-							</div>
-
-							<select class="form-control" ng-if="item.elem == 'select'" ng-model="myColor" ng-options="thing.value for thing in item.options" ng-required="{{item.required}}" disabled></select>
-
-							<button type="button" class="btn btn-primary btn-xs editButton" ng-click="Edit(item)">Edit</button>
-							<button type="button" class="btn btn-danger btn-xs removeButton" ng-click="Remove($index)">Remove</button>
-
-						</div>
-					</form>
-				</div>
-				<!-- End Form Builder -->
-		    </tab>
-
-		    <tab heading="Form Settings" ng-show="ShowBuilder">
-		      
-				<form novalidate name="FormSettings">
-				  <div class="form-group">
-				    <label for="exampleInputEmail1">Give this form a name</label>
-				    <input type="text" class="form-control" id="exampleInputEmail1" ng-model="Form.name" placeholder="Form Name">
-				  </div>
-
-				  <div class="form-group">
-				    <label for="exampleInputEmail1">What email should the results of this form be sent to?</label>
-				    <input type="email" class="form-control" id="exampleInputEmail1" ng-model="Form.emailTo" placeholder="Enter Email">
-				  </div>
-
-				<div class="checkbox">
-					<label>
-						<input type="checkbox" ng-model="Form.secured"> Do you want to create a pin number for users to access this form?
-					</label>
-				</div>
-				<div class="form-group" ng-show="Form.secured">
-					<label for="pin">Choose a PIN code to access your form.</label>
-					<input type="text" class="form-control" placeholder="Pin" ng-model="Form.pin">
-				</div>
-				  
-				  <button type="submit" class="btn btn-success" ng-click="SaveCurrentForm()">Save Form</button>
-				</form>
-
-		    </tab>
-
-		    <tab heading="Publish your form" ng-show="ShowBuilder">
-		    	<hr>
-
-		    	<div class="row">
-		    		<div class="col-sm-6">
-		    			<button type="submit" class="btn btn-success" ng-click="SaveCurrentForm()">Save Form</button>
-		    		</div>
-		    		<div class="col-sm-6">
-		    			<button type="submit" ng-hide="Form.isLive" class="btn btn-info pull-right" ng-click="ToggleLive()">Publish this form</button>
-		    			<button type="submit" ng-show="Form.isLive" class="btn btn-danger pull-right" ng-click="ToggleLive()">Take form offline</button>
-		    		</div>
-		    	</div>
-
-		    	<hr>
-
-		    	<p ng-show="Form.isLive">Your users can access this form from this link: <a target="_blank" href="{{APIPATH}}/viewForm?formID={{Form._id}}">{{APIPATH}}/viewForm?formID={{Form._id}}</a></p>
-		    	
-		    	
-		    </tab>
-
-		    <!-- Results -->
-		    <tab heading="Form Responses" ng-show="ShowBuilder">
-
-				<div class="row">
-					<div class="form-group col-sm-3">
-						<label>Filter:</label>
-						<input type="text" class="form-control" ng-model="searchText" placeholder="Filter">
-					</div>
-				</div>
-
-		    	<div class="table-responsive">
-		          <table class="table table-striped">
-		            <thead>
-		              <tr>
-		                <th class="hidden-xs">#</th>
-		                <th ng-repeat="(key, value) in Form.responses[0]">{{key}}</th>
-		              </tr>
-		            </thead>
-
-		            <tbody>
-		              <tr ng-repeat="response in Form.responses | filter:searchText">
-		                <th scope="row" class="hidden-xs">{{$index + 1}}</th>
-		                <td ng-repeat="item in response">{{item}}</td>
-		              </tr>
-		            </tbody>
-
-		          </table>
-
-
-
-		      </div>
-		    </tab>
-
-		  </tabset>
-	</div>
+	
+  	<!-- <div class="col-sm-2 sideMenu">
+  		<h3>Yo!</h3>
+  		<ul>
+  			<li>My Forms</li>
+  			<li>My Account</li>
+  			<li>Option 1</li>
+  			<li>Option 1</li>
+  			<li>Option 1</li>
+  		</ul>
+  	</div> -->
 
 	<div class="container">
-		<hr>
-		<div class="row" ng-show="Form.selected">
-			<div ng-show="Form.isLive" class="alert alert-success alertCustom">This form is currently live at <a target="_blank" class="formLink" href="{{APIPATH}}/viewForm?formID={{Form._id}}">{{APIPATH}}/viewForm?formID={{Form._id}}</a></div>
-			<div ng-hide="Form.isLive" class="alert alert-warning alertCustom">This form is currently in preview mode and is not publically available.</div>
-		</div>
+		<div class="col-sm-12 main">
+			<div class="" ng-hide="LoggedIn">
+				<div class="jumbotron">
+				  <h1>Applifi Form Builder</h1>
+				  <p>A simple form builder service brought to you by Applifi.</p>
+				  <div class="alert alert-danger" ng-show="Error">{{Error.message}}</div>
+				  <p>
+				  	<a class="btn btn-success btn-lg" ng-click="SignUpModal()">Sign Up</a>
+					<a class="btn btn-success btn-lg" ng-click="LoginModal()">Log In</a>
+				  </p>
+				</div>
+			</div>
+
+			<div class="" ng-show="LoggedIn">
+				<div class="page-header">
+					<h1 ng-show="{{Message.length > 0}}">{{Message}}</h1>
+					<div class="alert alert-info">
+						<strong>Welcome to the Form Builder.</strong> Watch our short tutorial video to help you get started!
+						<i class="fa fa-info-circle pull-right"></i>
+					</div>
+					<h3 ng-show="Form.selected">You are currently editing : 
+						<button class="btn btn-success disabled alertCustom">{{Form.name}}</button>
+					</h3>
+					<h3 ng-hide="Form.selected">Select a form to edit using it's 
+						<button class="btn btn-success disabled alertCustom">Edit</button> 
+					button in the list below.
+					</h3>
+					<hr>
+					<!-- <p>This is where you will build your form and select where the results are sent to.</p> -->
+					<button type="submit" class="btn btn-success" ng-click="NewForm()">New Form</button>
+				</div>
+			</div>
+
+			<div class="" ng-show="LoggedIn">
+				<tabset>
+					<tab heading="My Forms" active="tabActivity[0]">
+						<div class="table-responsive">
+				          <table class="table table-striped">
+				            <thead>
+				              <tr>
+				                <th class="hidden-xs">#</th>
+				                <th>Name</th>
+				                <th>Email (That gets the results)</th>
+				                <th>Responses</th>
+				                <th>Options</th>
+				              </tr>
+				            </thead>
+
+				            <tbody>
+				              <tr ng-repeat="form in AllForms track by $index" ng-class="{selected : form.selected}">
+				                <th scope="row" class="hidden-xs">{{$index + 1}}</th>
+				                <td>{{form.name}}</td>
+				                <td>{{form.emailTo}}</td>
+				                <td>{{form.responses.length}}</td>
+				                <td>
+				                  <button type="button" class="btn btn-success" ng-click="EditInBuilder(form)">Edit</button>
+				                  <button type="button" class="btn btn-danger" ng-click="Delete(form)">Delete Form</button>
+				                </td>
+				              </tr>
+				            </tbody>
+
+				          </table>
+				      </div>
+					</tab>
+				    <tab heading="Form Builder" ng-show="ShowBuilder" active="tabActivity[1]">
+				    	<!-- Form Builder -->
+						<div class="row">
+							<div class="col-sm-3">
+								<div class="form-group">
+									<hr>
+									<h4>Add form elements</h4>
+									<hr>
+
+									<button type="submit" class="btn btn-info btn-block btn-sm noHoverButton" ng-click="AddElementOptions('input')">
+										<i class="fa fa-question-circle"></i>
+										<p class="helper">This creates a simple input field to add text, numbers or email addresses.</p>
+									Add text input
+									</button>
+
+									<button type="submit" class="btn btn-info btn-block btn-sm noHoverButton" ng-click="AddElementOptions('select')">
+										<i class="fa fa-question-circle"></i>
+										<p class="helper">This creates a drop-down box where you define what options can be selected.</p>
+									Add select box</button>
+
+									<button type="submit" class="btn btn-info btn-block btn-sm noHoverButton" ng-click="AddElementOptions('textarea')">
+										<i class="fa fa-question-circle"></i>
+										<p class="helper">Use a textarea to create a text field with more lines than a standard input.</p>
+									Add text area</button>
+
+									<button type="submit" class="btn btn-info btn-block btn-sm noHoverButton" ng-click="AddElementOptions('checkbox')">
+										<i class="fa fa-question-circle"></i>
+										<p class="helper">This creates a checkbox field. Use this for questions with a yes/no answer.</p>
+									Add checkbox</button>
+
+									<button type="submit" class="btn btn-info btn-block btn-sm noHoverButton" ng-click="AddElementOptions('radio')">
+										<i class="fa fa-question-circle"></i>
+										<p class="helper">This creates a simple input field to add text, numbers or email addresses etc.</p>
+									Add radio button group</button>
+									
+
+									<hr>
+									<p>Choose a background colour for your form page.</p>
+									<button colorpicker type="button" class="btn btn-info btn-block btn-sm" style="background: {{Form.settings.BgColor}}" colorpicker-position="top" ng-model="Form.settings.BgColor">Choose Background Colour</button>
+									<div class="form-group">
+										<input type="text" class="form-control" placeholder="Hex Value" ng-model="Form.settings.BgColor">
+									</div>
+									<hr>
+
+									<button type="submit" class="btn btn-success btn-block" ng-click="SaveCurrentForm()">Save Form</button>
+								</div>
+							</div>
+							<div class="col-sm-9">
+								<hr>
+								<h4>{{Form.name}} : Preview</h4>
+								<hr>
+								<form novalidate name="FormDemo">
+									<div class="form-group" ng-repeat="item in Form.fields track by $index">
+										<label for="inputEmail3" class="col-sm-12 control-label" ng-if="item.elem != 'checkbox'">{{item.label}}</label>
+										<input ng-if="item.elem == 'input'" name="{{item.name}}" type="{{item.type}}" ng-model="DemoForm[item.name]" class="form-control" placeholder="{{item.placeholder}}" ng-required="{{item.required}}" disabled>
+
+										<textarea ng-if="item.elem == 'textarea'" class="form-control" name="{{item.name}}" rows="3" placeholder="{{item.placeholder}}" ng-required="{{item.required}}" disabled></textarea>
+
+										<div class="checkbox" ng-if="item.elem == 'checkbox'" name="{{item.name}}" required="{{item.required}}">
+											<label>
+												<input type="checkbox" disabled>
+												{{item.label}}
+											</label>
+										</div>
+
+										<div class="radio" ng-if="item.elem == 'radio'" ng-repeat="option in item.options">
+										  <label>
+										    <input type="radio" name="{{item.name}}" id="optionsRadios1" value="{{option.value}}" ng-required="{{item.required}}" disabled>
+										    {{option.value}}
+										  </label>
+										</div>
+
+										<select class="form-control" ng-if="item.elem == 'select'" ng-model="myColor" ng-options="thing.value for thing in item.options" ng-required="{{item.required}}" disabled></select>
+
+										<button type="button" class="btn btn-primary btn-xs editButton" ng-click="Edit(item)">Edit</button>
+										<button type="button" class="btn btn-danger btn-xs removeButton" ng-click="Remove($index)">Remove</button>
+
+									</div>
+								</form>
+							</div>
+						</div>
+						<!-- End Form Builder -->
+				    </tab>
+
+				    <tab heading="Form Settings" ng-show="ShowBuilder" active="tabActivity[2]">
+				      
+						<form novalidate name="FormSettings">
+						  <div class="form-group">
+						    <label for="exampleInputEmail1">Give this form a name</label>
+						    <input type="text" class="form-control" id="exampleInputEmail1" ng-model="Form.name" placeholder="Form Name">
+						  </div>
+
+						  <div class="form-group">
+						    <label for="exampleInputEmail1">What email should the results of this form be sent to?</label>
+						    <input type="email" class="form-control" id="exampleInputEmail1" ng-model="Form.emailTo" placeholder="Enter Email">
+						  </div>
+
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="Form.secured"> Do you want to create a pin number for users to access this form?
+							</label>
+						</div>
+						<div class="form-group" ng-show="Form.secured">
+							<label for="pin">Choose a PIN code to access your form.</label>
+							<input type="text" class="form-control" placeholder="Pin" ng-model="Form.pin">
+						</div>
+						  
+						  <button type="submit" class="btn btn-success" ng-click="SaveCurrentForm()">Save Form</button>
+						</form>
+
+				    </tab>
+
+				    <tab heading="Publish your form" ng-show="ShowBuilder" active="tabActivity[3]">
+				    	<hr>
+
+				    	<div class="row">
+				    		<div class="col-sm-6">
+				    			<button type="submit" class="btn btn-success" ng-click="SaveCurrentForm()">Save Form</button>
+				    		</div>
+				    		<div class="col-sm-6">
+				    			<button type="submit" ng-hide="Form.isLive" class="btn btn-info pull-right" ng-click="ToggleLive()">Publish this form</button>
+				    			<button type="submit" ng-show="Form.isLive" class="btn btn-danger pull-right" ng-click="ToggleLive()">Take form offline</button>
+				    		</div>
+				    	</div>
+
+				    	<hr>
+
+				    	<p ng-show="Form.isLive">Your users can access this form from this link: <a target="_blank" href="{{APIPATH}}/viewForm?formID={{Form._id}}">{{APIPATH}}/viewForm?formID={{Form._id}}</a></p>
+				    	
+				    </tab>
+
+				    <!-- Results -->
+				    <tab heading="Form Responses" ng-show="ShowBuilder" active="tabActivity[4]">
+
+						<div class="row">
+							<div class="form-group col-sm-3">
+								<label>Filter:</label>
+								<input type="text" class="form-control" ng-model="searchText" placeholder="Filter">
+							</div>
+						</div>
+
+				    	<div class="table-responsive">
+				          <table class="table table-striped">
+				            <thead>
+				              <tr>
+				                <th class="hidden-xs">#</th>
+				                <th ng-repeat="(key, value) in Form.responses[0]">{{key}}</th>
+				              </tr>
+				            </thead>
+
+				            <tbody>
+				              <tr ng-repeat="response in Form.responses | filter:searchText">
+				                <th scope="row" class="hidden-xs">{{$index + 1}}</th>
+				                <td ng-repeat="item in response">{{item}}</td>
+				              </tr>
+				            </tbody>
+
+				          </table>
+				      </div>
+
+				    </tab>
+
+				  </tabset>
+
+					<hr>
+
+					<div class="" ng-show="Form.selected">
+						<div ng-show="Form.isLive" class="alert alert-success alertCustom">This form is currently live at <a target="_blank" class="formLink" href="{{APIPATH}}/viewForm?formID={{Form._id}}">{{APIPATH}}/viewForm?formID={{Form._id}}</a></div>
+						<div ng-hide="Form.isLive" class="alert alert-warning alertCustom">This form is currently in preview mode and is not publically available.</div>
+					</div>
+				
+
+			</div>
+
+
+
+			
+		</div>	
 	</div>
+
+		
+		
 
 
 
@@ -294,7 +351,7 @@
 
 					<div class="form-group">
 						<label for="exampleInputEmail1">Input Label</label>
-						<input type="text" class="form-control" id="exampleInputEmail1" placeholder="Label" ng-model="Element.label" ng-change="EditInputName()">
+						<input type="text" class="form-control" ng-focus="true" placeholder="Label" ng-model="Element.label" ng-change="EditInputName()">
 					</div>
 
 					<label ng-show="Element.elem == 'input'">Select Input type</label>

@@ -42,7 +42,7 @@ app.use(passport.initialize());
 app.post('/postUsers', userController.postUsers);
 app.post('/newForm', authController.isAuthenticated, formController.newForm);
 app.post('/saveForm', authController.isAuthenticated, formController.saveForm);
-app.post('/getAllUserForms', authController.isAuthenticated, formController.getAllUserForms);
+app.post('/getAllUserForms', formController.getAllUserForms);
 app.post('/getFormById', formController.getFormById);
 app.post('/postFormResponse', formController.postFormResponse);
 

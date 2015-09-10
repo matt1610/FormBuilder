@@ -2,6 +2,7 @@
 
 
 var Form = require('../models/form.js');
+var User = require('../models/user.js');
 
 exports.newForm = function(req, res) {
 
@@ -50,13 +51,37 @@ exports.saveForm = function(req, res) {
 }
 
 exports.getAllUserForms = function(req, res) {
-  Form.find({ownerEmail : req.body.email}).exec(function(err, forms) {
+
+  User.findOne({email : req.body.email}).exec( function(err, user) {
     if (err) {
-      res.json(err);
-    } else {
-      res.json({success : true, forms: forms});
-    }
-  })
+      res.json({success : false, message : err});
+    };
+    if (!user) {
+      res.json({success : false, message : 'This user does not exist.'});
+    };
+
+    user.verifyPassword(req.body.password, function(err, isMatch) {
+      if (err) {
+        res.json({success : false, message : err});
+      };
+      if (!isMatch) {
+        res.json({success : false, message : 'Password incorrect.'})
+      };
+      if (isMatch) {
+        Form.find({ownerEmail : req.body.email}).exec(function(err, forms) {
+          if (err) {
+            res.json(err);
+          } else {
+            res.json({success : true, forms: forms});
+          }
+        });
+      };
+    }); // End Verify Password
+  });
+
+
+
+  
 }
 
 exports.postFormResponse = function(req, res) {

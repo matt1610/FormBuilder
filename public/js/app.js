@@ -108,6 +108,8 @@ var FormBuilder = angular.module('DataCapture', ['ui.bootstrap','colorpicker.mod
 	    });
 	};
 
+	$scope.tabActivity=[false,false,false,false,false];
+
 	$scope.EditInBuilder = function(form) {
 		$scope.ShowBuilder = true;
 		$scope.Form = form;
@@ -115,7 +117,7 @@ var FormBuilder = angular.module('DataCapture', ['ui.bootstrap','colorpicker.mod
 			$scope.AllForms[i].selected = false;
 		};
 		form.selected = true;
-		console.log(form);
+		$scope.tabActivity[1] = true;
 	}
 
 	$scope.NewForm = function() {
@@ -176,6 +178,9 @@ var FormBuilder = angular.module('DataCapture', ['ui.bootstrap','colorpicker.mod
 				$scope.Error = {message : response.data.message};
 			}
 			$scope.Loading = false;
+			// $scope.Form = $scope.AllForms[0];
+			// $scope.AllForms[0].selected = true;
+			// $scope.ShowBuilder = true;
 		});
 	}
 
@@ -188,6 +193,8 @@ var FormBuilder = angular.module('DataCapture', ['ui.bootstrap','colorpicker.mod
 	if ($scope.LoggedIn) {
 		$scope.GetMyForms();
 	};
+
+	console.log($scope);
 	 
 
 })

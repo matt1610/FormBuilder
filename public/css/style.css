@@ -82,6 +82,95 @@ svg path {
 	color: #fff;
 }
 
+.navbar {
+	background-color: #75caeb;
+	border-color: #5fc1e8;
+	margin-bottom: 0;
+}
+
+.sideMenu {
+	background-color: #545454;
+	height: 100%;
+	border-right: 5px solid #424242;
+	padding: 0;
+}
+
+.sideMenu h3 {
+	color: #fff;
+}
+
+.sideMenu li {
+	color: #fff;
+    list-style: none;
+    padding: 10px 10px;
+    border-bottom: 1px solid #616161;
+    cursor: pointer;
+}
+
+	.sideMenu li:hover {
+		background-color: #333;
+	}
+
+.sideMenu ul {
+	padding: 0;
+}
+
+.main {
+	padding: 0px 40px;
+}
+
+.alert i {
+	font-size: 3rem;
+	top: -5px;
+	position: relative;
+}
+
+button i {
+	font-size: 2em !important;
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    z-index: 9;
+}
+
+.noHoverButton {
+	position: relative;
+}
+
+.helper {
+	display: none;
+	position: absolute;
+	left: 0px;
+    bottom: 20px;
+    background: #fff;
+    border-radius: 3px;
+    border: 1px solid gray;
+    color: gray;
+    transition : all 0.4s ease;
+    z-index: 10;
+    padding: 5px 10px;
+    box-shadow: 0px 0px 10px #929292;
+    white-space: normal;
+}
+
+.noHoverButton i:hover + .helper {
+	display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
