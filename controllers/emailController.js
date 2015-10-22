@@ -27,12 +27,10 @@ function SendEmail(to, from, subject, body) {
 }
 
 exports.sendResponseEmail = function(formResponse, formID) {
-	console.log(formResponse, formID);
 	Form.findOne({_id : formID}, {name: 1, emailTo: 1, ownerEmail: 1}).exec(function(err,data) {
 		if (err) {
 			console.log('Error ' + err);
 		};
-		console.log(data);
 
 		var body = '';
 		body += '<p>A new response has been posted for your form:</p>';
