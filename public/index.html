@@ -292,7 +292,7 @@
 				            <thead>
 				              <tr>
 				                <th class="hidden-xs">#</th>
-				                <th ng-repeat="(key, value) in Form.responses[0]">{{key}}</th>
+				                <th ng-repeat="(key, value) in LastForm">{{key}}</th>
 				              </tr>
 				            </thead>
 
@@ -358,7 +358,6 @@
 					<select class="form-control" ng-show="Element.elem == 'input'" ng-model="Element.type">
 					  <option value="text">text</option>
 					  <option value="email">email</option>
-					  <option value="password">password</option>
 					</select>
 
 					<div class="form-group" ng-show="Element.elem == 'input' || Element.elem == 'textarea'">

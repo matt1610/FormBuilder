@@ -3,6 +3,7 @@
 
 var Form = require('../models/form.js');
 var User = require('../models/user.js');
+var emailController = require('../controllers/emailController.js');
 
 exports.newForm = function(req, res) {
 
@@ -90,6 +91,7 @@ exports.postFormResponse = function(req, res) {
       res.json({success : false, message : err});
     } else {
       res.json({success : true, message : 'Form submitted successfully', data : data});
+      emailController.sendResponseEmail(req.body.response, req.body.id);
     }
   })
 }

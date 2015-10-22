@@ -15,7 +15,8 @@
     "mongodb-uri": "",
     "mongoose": "",
     "passport": "",
-    "passport-http": "^0.2.2"
+    "passport-http": "^0.2.2",
+    "nodemailer": ""
   },
   "engines": {
     "node": "0.10.x"

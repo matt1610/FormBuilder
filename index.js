@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var userController = require('./controllers/userController.js');
 var authController = require('./controllers/authController.js');
 var formController = require('./controllers/formController.js');
+var emailController = require('./controllers/emailController.js');
 var passport = require('passport');
 var secrets = require('./config/secrets.js');
 
@@ -45,6 +46,7 @@ app.post('/saveForm', authController.isAuthenticated, formController.saveForm);
 app.post('/getAllUserForms', formController.getAllUserForms);
 app.post('/getFormById', formController.getFormById);
 app.post('/postFormResponse', formController.postFormResponse);
+// app.post('/sendEmail', authController.isAuthenticated, emailController.sendEmail);
 
 app.get('/test', function(req, res) {
 	res.send({isOn : true});

@@ -118,6 +118,7 @@ var FormBuilder = angular.module('DataCapture', ['ui.bootstrap','colorpicker.mod
 		};
 		form.selected = true;
 		$scope.tabActivity[1] = true;
+		$scope.LastForm = form.responses[form.responses.length-1];
 	}
 
 	$scope.NewForm = function() {
