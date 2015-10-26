@@ -40,7 +40,16 @@ FormBuilder.factory('API', function($http, APIPATH, Local, Base64){
 				data : user,
 				headers : {'Content-Type': 'application/json'}
 			});
-		}
+		},
+        GetResponseCSV : function(id) {
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode(Local.GetLogin().user.email + ':' + Local.GetLogin().user.password);
+            return $http({
+                method : 'POST',
+                url : APIPATH + '/getFormResponseCSV',
+                data : {id : id},
+                headers : {'Content-Type': 'application/json'}
+            });
+        }
 	};
 })
 

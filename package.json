@@ -10,13 +10,16 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "",
     "cors": "",
+    "csv": "^0.4.6",
     "express": "~4.9.x",
+    "express-csv": "^0.6.0",
+    "json2csv": "^3.0.0",
     "mongodb": "",
     "mongodb-uri": "",
     "mongoose": "",
+    "nodemailer": "",
     "passport": "",
-    "passport-http": "^0.2.2",
-    "nodemailer": ""
+    "passport-http": "^0.2.2"
   },
   "engines": {
     "node": "0.10.x"

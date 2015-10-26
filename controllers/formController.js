@@ -4,6 +4,8 @@
 var Form = require('../models/form.js');
 var User = require('../models/user.js');
 var emailController = require('../controllers/emailController.js');
+var json2csv = require('json2csv');
+var csv = require('express-csv');
 
 exports.newForm = function(req, res) {
 
@@ -102,6 +104,26 @@ exports.getFormById = function(req, res) {
       res.json({success : false, message : err});
     } else {
       res.json({success: true, forms : forms});
+    }
+  });
+}
+
+exports.getFormResponseCSV = function(req, res) {
+  Form.find({_id : req.body.id}, {responses : 1}).limit(1).exec(function(err, forms) {
+    if (err) {
+      console.log('Error!');
+      res.json({success : false, message : err});
+    } else {
+      var responses = forms[0].responses;
+      var fields = [];
+      for (x in responses[responses.length-1]) {
+        fields.push(x);
+      }
+      json2csv({ data: responses, fields: fields }, function(err, csvData) {
+        if (err) console.log(err);
+        res.csv(responses);
+      });
+
     }
   });
 }

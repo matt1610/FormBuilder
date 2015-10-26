@@ -121,6 +121,10 @@ var FormBuilder = angular.module('DataCapture', ['ui.bootstrap','colorpicker.mod
 		$scope.LastForm = form.responses[form.responses.length-1];
 	}
 
+	$scope.DownloadCSV = function(form) {
+		API.GetResponseCSV(form._id);
+	}
+
 	$scope.NewForm = function() {
 		var modalInstance = $modal.open({
 	      animation: $scope.animationsEnabled,
