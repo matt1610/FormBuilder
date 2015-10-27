@@ -121,7 +121,12 @@ exports.getFormResponseCSV = function(req, res) {
       }
       json2csv({ data: responses, fields: fields }, function(err, csvData) {
         if (err) console.log(err);
-        res.csv(responses);
+
+        res.setHeader('Content-disposition', 'attachment; filename=testing.csv');
+          res.writeHead(200, {
+              'Content-Type': 'text/wtf'
+          });
+        res.csv(csvData);
       });
 
     }
